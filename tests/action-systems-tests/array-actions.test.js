@@ -238,3 +238,33 @@ Deno.test("ArrayActins - calculate_paging", async () => {
     assertEquals(result.row_count, 3);
     assertEquals(result.page_count, 3);
 })
+
+Deno.test("ArrayActions - reorder", async () => {
+    const context = {
+        values: []
+    };
+
+    const source = [
+        {
+            id: "refresh"
+        },
+        {
+            id: "delete"
+        },
+        {
+            id: "undo"
+        }
+    ];
+    const order = ["delete", "undo", "refresh"];
+
+    const result = await crs.call("array", "reorder", {
+        source: source,
+        field: "id",
+        order: order,
+    }, context);
+
+    assertEquals(result.length, 3);
+    assertEquals(result[0].id, order[0]);
+    assertEquals(result[1].id, order[1]);
+    assertEquals(result[2].id, order[2]);
+});
