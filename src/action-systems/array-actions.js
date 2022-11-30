@@ -201,6 +201,22 @@ export class ArrayActions {
 
         return result;
     }
+
+    /**
+     * Reorder array by a specific sequence
+     */
+    static async reorder(step, context, process, item) {
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const order = await crs.process.getValue(step.args.order, context, process, item);
+
+        const result = data.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 async function field_to_csv(array, field, delimiter) {
