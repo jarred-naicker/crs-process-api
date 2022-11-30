@@ -206,10 +206,10 @@ export class ArrayActions {
      * Reorder array by a specific sequence
      */
     static async reorder(step, context, process, item) {
-        const itemsToSort = await crs.process.getValue(step.args.source, context, process, item);
-        const itemSequence = await crs.process.getValue(step.args.order, context, process, item);
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const order = await crs.process.getValue(step.args.order, context, process, item);
 
-        const result = itemsToSort.sort((a, b) => itemSequence.indexOf(a.id) - itemSequence.indexOf(b.id));
+        const result = data.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
